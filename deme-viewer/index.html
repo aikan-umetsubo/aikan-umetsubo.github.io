@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>出目ビューア</title>
   <style>
+    /* 全体 */
     :root {
       /* 全体のサイズ */
       --reels-wrapper-width: 99vw;
@@ -36,6 +37,15 @@
     body {
       background-color: darkcyan;
     }
+
+    /* メイン部分 */
+    main {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+    }
+
+    /* リール */
     div#reels-wrapper {
       width: var(--reels-wrapper-width);
       height: var(--reels-wrapper-height);
@@ -85,6 +95,37 @@
       position: absolute;
 
       transform: scale(var(--zoom), var(--zoom));
+    }
+
+    /* カーソル */
+    div.cursor-wrapper {
+      width: var(--reels-wrapper-width);
+
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+    div.cursors {
+      width: var(--reels-width);
+
+      display: inherit;
+      flex-flow: inherit;
+      justify-content: space-around;
+      align-items: stretch;
+    }
+
+    div.arrow {
+      width: 30px;
+      height: 30px;
+      border: 5px solid;
+      border-color: #565656 #565656 transparent transparent;
+    }
+    div.arrow-up {
+      transform: rotate(315deg);
+    }
+    div.arrow-down {
+      transform: rotate(135deg);
     }
 
     /* リールの左右の位置決め */
@@ -324,8 +365,12 @@
   </script>
     <header></header>
     <main>
-      <div id="upper-cursor-wrapper">
-        
+      <div id="upper-cursor-wrapper" class="cursor-wrapper">
+        <div id="upper-cursors" class="cursors">
+          <div id="upper-left-arrow" class="arrow arrow-up"></div>
+          <div id="upper-center-arrow" class="arrow arrow-up"></div>
+          <div id="upper-right-arrow" class="arrow arrow-up"></div>
+        </div>
       </div>
       <div id="reels-wrapper">
         <div id="reels">
@@ -364,8 +409,12 @@
           </div>
         </div>
       </div>
-      <div id="lower-cursor-wrapper">
-
+      <div id="lower-cursor-wrapper" class="cursor-wrapper">
+        <div id="lower-cursors" class="cursors">
+          <div id="lower-left-arrow" class="arrow arrow-down"></div>
+          <div id="lower-center-arrow" class="arrow arrow-down"></div>
+          <div id="lower-right-arrow" class="arrow arrow-down"></div>
+        </div>
       </div>
     </main>
   <footer></footer>
