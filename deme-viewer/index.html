@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>出目ビューア</title>
+  <style>
+    :root {
+      /* 全体のサイズ */
+      --reels-wrapper-width: 99vw;
+      --reels-wrapper-height: 97vh;
+
+      /* リール部分のサイズ */
+      --reels-width: 69vw;
+      --reels-height: calc(var(--reels-width) * (126 / 297));
+
+      /* リール間のマージン */
+      --each-reel-margin: 1%;
+
+      /* 元のリール画像に対する拡大率 */
+      --zoom: 3.11;
+
+      /* 元のリール画像での絵柄のサイズ */
+      --source-symbol-width: 95.5px;
+      --source-symbol-height: 39px;
+
+      /* 拡大後のリール画像の基点（左上隅）の位置 */
+      --reel-basis-x: -817px;
+      --reel-basis-y: 1180px;
+
+      /* 拡大後のリール画像での絵柄のサイズ */
+      --symbol-width: calc(var(--zoom) * var(--source-symbol-width));
+      --symbol-height: calc(var(--zoom) * var(--source-symbol-height));
+    }
+    body {
+      background-color: darkcyan;
+    }
+    div#reels-wrapper {
+      width: var(--reels-wrapper-width);
+      height: var(--reels-wrapper-height);
+
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+    div#reels {
+      width: var(--reels-width);
+      height: var(--reels-height);
+
+      display: inherit;
+      flex-flow: inherit;
+      justify-content: space-around;
+      align-items: stretch;
+
+      border: groove black;
+    }
+    div.reel {
+      width: 100%;
+      height: 100%;
+
+      display: inherit;
+      flex-flow: column nowrap;
+      justify-content: space-around;
+      align-items: inherit;
+
+      border: solid black;
+      border-style: hidden outset;
+    }
+    div.symbol {
+      width: calc(100% - 2 * var(--each-reel-margin));
+      height: calc(100% - 2 * var(--each-reel-margin));
+
+      margin-right: var(--each-reel-margin);
+      margin-left: var(--each-reel-margin);
+
+      flex-basis: auto;
+      overflow: hidden;
+      position: relative;
+      align-self: stretch;
+    }
+    div.symbol img {
+      object-fit: cover;
+      position: absolute;
+
+      transform: scale(var(--zoom), var(--zoom));
+    }
+
+    /* リールの左右の位置決め */
+    div.left-symbol img {
+      left: var(--reel-basis-x);
+    }
+    div.center-symbol img {
+      left: calc(var(--reel-basis-x) - var(--symbol-width));
+    }
+    div.right-symbol img {
+      left: calc(var(--reel-basis-x) - 2 * var(--symbol-width));
+    }
+
+    /* リールの上下の位置決め */
+    div#upper-left-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--left-upper-reel-position)
+      );
+    }
+    div#middle-left-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--left-middle-reel-position)
+      );
+    }
+    div#lower-left-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--left-lower-reel-position)
+      );
+    }
+    div#upper-center-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--center-upper-reel-position)
+      );
+    }
+    div#middle-center-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--center-middle-reel-position)
+      );
+    }
+    div#lower-center-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--center-lower-reel-position)
+      );
+    }
+    div#upper-right-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--right-upper-reel-position)
+      );
+    }
+    div#middle-right-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--right-middle-reel-position)
+      );
+    }
+    div#lower-right-symbol img {
+      top: calc(
+        var(--reel-basis-y) - var(--symbol-height) * var(--right-lower-reel-position)
+      );
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const root = document.querySelector(":root");
+    class Cursor {
+      constructor(left, center, right) {
+        this._select = 0;
+        this.select = this.toString();
+        /* TODO:カーソルのCSS変数をここでセットする */
+      }
+      toString() {
+        return ["left", "center", "right"][this._select];
+      }
+      toLeft() {
+        /* TODO:今のカーソルをhiddenに */
+        this._select = (this._select + 2) % 3;
+        this.select = this.toString();
+        /* TODO:新しいカーソルを表示 */
+      }
+      toRight() {
+        /* TODO:今のカーソルをhiddenに */
+        this._select = (this._select + 1) % 3;
+        this.select = this.toString();
+        /* TODO:新しいカーソルを表示 */
+      }
+    }
+    class Symbol {
+      constructor(position, cssVariable) {
+        this.position = (position + symbolCount) % symbolCount;
+        this.cssVariable = cssVariable;
+        root.style.setProperty(this.cssVariable, this.position);
+      }
+      toString() {
+        return `${this.cssVariable} : ${this.position}`;
+      }
+      toUp() {
+        this.position = (this.position + 1) % symbolCount;
+        root.style.setProperty(this.cssVariable, this.position);
+      }
+      toDown() {
+        this.position = (this.position　- 1 + symbolCount) % symbolCount;
+        root.style.setProperty(this.cssVariable, this.position);
+      }
+      to(position) {
+        this.position = (position + symbolCount) % symbolCount;
+        root.style.setProperty(this.cssVariable, this.position);
+      }
+    }
+    class Reel {
+      constructor(upper, middle, lower) {
+        this.upper_symbol = upper;
+        this.middle_symbol = middle;
+        this.lower_symbol = lower;
+        this.updateHash();
+      }
+      toString() {
+        return [
+          this.upper_symbol.toString(),
+          this.middle_symbol.toString(),
+          this.lower_symbol.toString()
+        ];
+      }
+      toUp() {
+        this.upper_symbol.toUp();
+        this.middle_symbol.toUp();
+        this.lower_symbol.toUp();
+        this.updateHash();
+      }
+      toDown() {
+        this.upper_symbol.toDown();
+        this.middle_symbol.toDown();
+        this.lower_symbol.toDown();
+        this.updateHash();
+      }
+      to(position) {
+        this.upper_symbol.to(position);
+        this.middle_symbol.to(position+1);
+        this.lower_symbol.to(position+2);
+        this.updateHash();
+      }
+      updateHash() {
+        this.hash = String(this.upper_symbol.position+1).padStart(2, "0");
+      }
+    }
+    class Hash {
+      constructor(left, center, right) {
+        if (this.isValid(left, center, right)) {
+            this._left = left;
+            this._center = center;
+            this._right = right;
+        } else {
+
+        }
+        window.location.hash = `${this.left.hash}${this.center.hash}${this.right.hash}`;
+      }
+      isValid(left, center, right) {
+        return !left && String(left).match(/0[1-9]|1[1-9]|2[0-1]/)
+               &&
+               !center && String(center).match(/0[1-9]|1[1-9]|2[0-1]/)
+               &&
+               !left && String(left).match(/0[1-9]|1[1-9]|2[0-1]/);
+      }
+    }
+    class Config {
+      constructor() {
+          
+      }
+    }
+    class ViewModel {
+      constructor(cursor, left, center, right) {
+        this.cursor = cursor;
+        this.left = left;
+        this.center = center;
+        this.right = right;
+        this.updateHash();
+      }
+      selectedReel() {
+        reels = {
+          left: this.left,
+          center: this.center,
+          right: this.right
+        }
+        return reels[this.cursor.select];
+      }
+      updateHash() {
+        window.location.hash = `${this.left.hash}${this.center.hash}${this.right.hash}`;
+      }
+      init() {
+        if (!window.location.hash) {
+
+        } else {
+          viewModel.left.to(initialPosition.left);
+          viewModel.center.to(initialPosition.center);
+          viewModel.right.to(initialPosition.right);
+        }
+      }
+    };
+    const viewModel = new ViewModel(
+      /* TODO:正式なCSS変数を渡す */
+      new Cursor(
+        "foo",
+        "bar",
+        "baz"
+      ),
+      new Reel(
+        new Symbol(initialPosition.left, "--left-upper-reel-position"),
+        new Symbol(initialPosition.left+1, "--left-middle-reel-position"),
+        new Symbol(initialPosition.left+2, "--left-lower-reel-position")
+      ),
+      new Reel(
+        new Symbol(initialPosition.center, "--center-upper-reel-position"),
+        new Symbol(initialPosition.center+1, "--center-middle-reel-position"),
+        new Symbol(initialPosition.center+2, "--center-lower-reel-position")
+      ),
+      new Reel(
+        new Symbol(initialPosition.right, "--right-upper-reel-position"),
+        new Symbol(initialPosition.right+1, "--right-middle-reel-position"),
+        new Symbol(initialPosition.right+2, "--right-lower-reel-position")
+      )
+    );
+    window.onload = () => {
+      viewModel.init();
+    };
+    root.onkeydown = () => {
+      if (e.code === "ArrowUp") {
+        viewModel.selectedReel().toUp();
+        viewModel.updateHash();
+      } else if (e.code === "ArrowDown") {
+        viewModel.selectedReel().toDown();
+        viewModel.updateHash();
+      } else if (e.code === "ArrowLeft") {
+        viewModel.cursor.toLeft();
+      } else if (e.code === "ArrowRight") {
+        viewModel.cursor.toRight();
+      }
+    };
+  </script>
+    <header></header>
+    <main>
+      <div id="upper-cursor-wrapper">
+        
+      </div>
+      <div id="reels-wrapper">
+        <div id="reels">
+          <div id="left-reel" class="reel">
+            <div id="upper-left-symbol" class="symbol upper-symbol left-symbol">
+              <img src="img/main_spec.png">
+            </div>
+            <div id="middle-left-symbol" class="symbol middle-symbol left-symbol">
+              <img src="img/main_spec.png">
+            </div>
+            <div id="lower-left-symbol" class="symbol lower-symbol left-symbol">
+              <img src="img/main_spec.png">
+            </div>
+          </div>
+          <div id="center-reel" class="reel">
+            <div id="upper-center-symbol" class="symbol upper-symbol center-symbol">
+              <img src="img/main_spec.png">
+            </div>
+            <div id="middle-center-symbol" class="symbol middle-symbol center-symbol">
+              <img src="img/main_spec.png">
+            </div>
+            <div id="lower-center-symbol" class="symbol lower-symbol center-symbol">
+              <img src="img/main_spec.png">
+            </div>
+          </div>
+          <div id="right-reel" class="reel">
+            <div id="upper-right-symbol" class="symbol upper-symbol right-symbol ">
+              <img src="img/main_spec.png">
+            </div>
+            <div id="middle-right-symbol" class="symbol middle-symbol right-symbol">
+              <img src="img/main_spec.png">
+            </div>
+            <div id="lower-right-symbol" class="symbol lower-symbol right-symbol">
+              <img src="img/main_spec.png">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="lower-cursor-wrapper">
+
+      </div>
+    </main>
+  <footer></footer>
+</body>
+</html>
