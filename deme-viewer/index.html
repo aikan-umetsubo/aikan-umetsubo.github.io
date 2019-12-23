@@ -8,9 +8,12 @@
   <style>
     /* 全体 */
     :root {
-      /* 全体のサイズ */
+      /* 全体のパディング */
+      --main-padding: 15vh;
+
+      /* リール全体のサイズ */
       --reels-wrapper-width: 99vw;
-      --reels-wrapper-height: 97vh;
+      --reels-wrapper-height: 55vh;
 
       /* リール部分のサイズ */
       --reels-width: 69vw;
@@ -40,6 +43,7 @@
 
     /* メイン部分 */
     main {
+      padding: var(--main-padding) 0;
       display: flex;
       flex-flow: column nowrap;
       justify-content: center;
@@ -115,16 +119,16 @@
       align-items: stretch;
     }
 
-    div.arrow {
+    div.cursor {
       width: 30px;
       height: 30px;
       border: 5px solid;
       border-color: #565656 #565656 transparent transparent;
     }
-    div.arrow-up {
+    div.cursor-up {
       transform: rotate(315deg);
     }
-    div.arrow-down {
+    div.cursor-down {
       transform: rotate(135deg);
     }
 
@@ -192,23 +196,28 @@
     const root = document.querySelector(":root");
     class Cursor {
       constructor(left, center, right) {
-        this._select = 0;
-        this.select = this.toString();
+        
+
+        this._current = 0;
+        this.current = this.toString();
         /* TODO:カーソルのCSS変数をここでセットする */
       }
+      current() {
+        return _current;
+      }
       toString() {
-        return ["left", "center", "right"][this._select];
+        return ["left", "center", "right"][this._current];
       }
       toLeft() {
         /* TODO:今のカーソルをhiddenに */
-        this._select = (this._select + 2) % 3;
-        this.select = this.toString();
+        this._current = (this._current + 2) % 3;
+        this.current = this.toString();
         /* TODO:新しいカーソルを表示 */
       }
       toRight() {
         /* TODO:今のカーソルをhiddenに */
-        this._select = (this._select + 1) % 3;
-        this.select = this.toString();
+        this._current = (this._current + 1) % 3;
+        this.current = this.toString();
         /* TODO:新しいカーソルを表示 */
       }
     }
@@ -326,7 +335,7 @@
     const viewModel = new ViewModel(
       /* TODO:正式なCSS変数を渡す */
       new Cursor(
-        "foo",
+        "",
         "bar",
         "baz"
       ),
@@ -367,9 +376,9 @@
     <main>
       <div id="upper-cursor-wrapper" class="cursor-wrapper">
         <div id="upper-cursors" class="cursors">
-          <div id="upper-left-arrow" class="arrow arrow-up"></div>
-          <div id="upper-center-arrow" class="arrow arrow-up"></div>
-          <div id="upper-right-arrow" class="arrow arrow-up"></div>
+          <div id="upper-left-cursor" class="cursor cursor-up"></div>
+          <div id="upper-center-cursor" class="cursor cursor-up"></div>
+          <div id="upper-right-cursor" class="cursor cursor-up"></div>
         </div>
       </div>
       <div id="reels-wrapper">
@@ -411,9 +420,9 @@
       </div>
       <div id="lower-cursor-wrapper" class="cursor-wrapper">
         <div id="lower-cursors" class="cursors">
-          <div id="lower-left-arrow" class="arrow arrow-down"></div>
-          <div id="lower-center-arrow" class="arrow arrow-down"></div>
-          <div id="lower-right-arrow" class="arrow arrow-down"></div>
+          <div id="lower-left-cursor" class="cursor cursor-down"></div>
+          <div id="lower-center-cursor" class="cursor cursor-down"></div>
+          <div id="lower-right-cursor" class="cursor cursor-down"></div>
         </div>
       </div>
     </main>
