@@ -13,6 +13,9 @@ class ViewModel {
     this.centerCursor = centerCursor;
     this.rightCursor = rightCursor;
 
+    // コンフィグ
+    this.config = new Config();
+
     // URLのハッシュの更新
     this.updateHash();
   }
@@ -25,15 +28,15 @@ class ViewModel {
     return reels[this.cursor.select];
   }
   updateHash() {
-    window.location.hash = `${this.left.hash}${this.center.hash}${this.right.hash}`;
+    window.location.hash = `${this.leftReel.hash}${this.centerReel.hash}${this.rightReel.hash}`;
   }
   init() {
     if (!window.location.hash) {
       /* TODO: hashなしの場合の初期処理 */
     } else {
-      viewModel.left.to(initialPosition.left);
-      viewModel.center.to(initialPosition.center);
-      viewModel.right.to(initialPosition.right);
+      this.leftReel.to(config.initialPosition.left);
+      this.centerReel.to(config.initialPosition.center);
+      this.rightReel.to(config.initialPosition.right);
     }
   }
 };
@@ -41,7 +44,7 @@ class ViewModel {
 // 図柄
 class Symbol {
   constructor(position, cssVariable) {
-    this.position = (position + symbolCount) % symbolCount;
+    this.position = (position + config.symbolCount) % config.symbolCount;
     this.cssVariable = cssVariable;
     root.style.setProperty(this.cssVariable, this.position);
   }
@@ -49,15 +52,15 @@ class Symbol {
     return `${this.cssVariable} : ${this.position}`;
   }
   toUp() {
-    this.position = (this.position + 1) % symbolCount;
+    this.position = (this.position + 1) % config.symbolCount;
     root.style.setProperty(this.cssVariable, this.position);
   }
   toDown() {
-    this.position = (this.position　- 1 + symbolCount) % symbolCount;
+    this.position = (this.position　- 1 + config.symbolCount) % config.symbolCount;
     root.style.setProperty(this.cssVariable, this.position);
   }
   to(position) {
-    this.position = (position + symbolCount) % symbolCount;
+    this.position = (position + config.symbolCount) % config.symbolCount;
     root.style.setProperty(this.cssVariable, this.position);
   }
 }
@@ -179,29 +182,37 @@ class Hash {
 // コンフィグ
 class Config {
   constructor() {
-      
+    
   }
+}
+
+const config = {
+  "initialPosition": {
+      "left": 7,
+      "center": 9,
+      "right": 13
+  },
+  "symbolCount": 21
 }
 
 // ビューモデルの生成
 const viewModel = new ViewModel(
-  /* TODO:正式なCSS変数を渡す */
+  new Reel(
+    new Symbol(config.initialPosition.left, "--left-upper-reel-position"),
+    new Symbol(config.initialPosition.left+1, "--left-middle-reel-position"),
+    new Symbol(config.initialPosition.left+2, "--left-lower-reel-position")
+  ),
+  new Reel(
+    new Symbol(config.initialPosition.center, "--center-upper-reel-position"),
+    new Symbol(config.initialPosition.center+1, "--center-middle-reel-position"),
+    new Symbol(config.initialPosition.center+2, "--center-lower-reel-position")
+  ),
+  new Reel(
+    new Symbol(config.initialPosition.right, "--right-upper-reel-position"),
+    new Symbol(config.initialPosition.right+1, "--right-middle-reel-position"),
+    new Symbol(config.initialPosition.right+2, "--right-lower-reel-position")
+  ),
   new Cursors(),
-  new Reel(
-    new Symbol(initialPosition.left, "--left-upper-reel-position"),
-    new Symbol(initialPosition.left+1, "--left-middle-reel-position"),
-    new Symbol(initialPosition.left+2, "--left-lower-reel-position")
-  ),
-  new Reel(
-    new Symbol(initialPosition.center, "--center-upper-reel-position"),
-    new Symbol(initialPosition.center+1, "--center-middle-reel-position"),
-    new Symbol(initialPosition.center+2, "--center-lower-reel-position")
-  ),
-  new Reel(
-    new Symbol(initialPosition.right, "--right-upper-reel-position"),
-    new Symbol(initialPosition.right+1, "--right-middle-reel-position"),
-    new Symbol(initialPosition.right+2, "--right-lower-reel-position")
-  )
 );
 
 // ページの読み込み後にビューモデルを初期化
@@ -209,8 +220,8 @@ window.onload = () => {
   viewModel.init();
 };
 
-// 画面操作時のイベントの
-root.onkeydown = () => {
+// 画面操作時のイベント設定
+root.onkeydown = (e) => {
   if (e.code === "ArrowUp") {
     viewModel.selectedReel().toUp();
     viewModel.updateHash();
