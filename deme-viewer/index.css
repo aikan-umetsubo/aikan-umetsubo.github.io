@@ -1,0 +1,194 @@
+/* 全体に共通する */
+:root {
+  /* 全体のパディング */
+  --main-padding: 15vh;
+
+  /* リール全体のサイズ */
+  --reels-wrapper-width: 99vw;
+  --reels-wrapper-height: 55vh;
+
+  /* リール部分のサイズ */
+  --reels-width: 69vw;
+  --reels-height: calc(var(--reels-width) * (126 / 297));
+
+  /* リール間のマージン */
+  --each-reel-margin: 1%;
+
+  /* 元のリール画像に対する拡大率 */
+  --zoom: 3.11;
+
+  /* 元のリール画像での絵柄のサイズ */
+  --source-symbol-width: 95.5px;
+  --source-symbol-height: 39px;
+
+  /* 拡大後のリール画像の基点（左上隅）の位置 */
+  --reel-basis-x: -817px;
+  --reel-basis-y: 1180px;
+
+  /* 拡大後のリール画像での絵柄のサイズ */
+  --symbol-width: calc(var(--zoom) * var(--source-symbol-width));
+  --symbol-height: calc(var(--zoom) * var(--source-symbol-height));
+
+  /* カーソル */
+  --upper-left-cursor-display: none;
+  --lower-left-cursor-display: none;
+  --upper-center-cursor-display: none;
+  --lower-center-cursor-display: none;
+  --upper-right-cursor-display: none;
+  --lower-right-curso-display: none;
+
+}
+
+/* 画面全体 */
+body {
+  background-color: darkcyan;
+}
+
+/* メイン部分 */
+main {
+  padding: var(--main-padding) 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+/* リール */
+div#reels-wrapper {
+  width: var(--reels-wrapper-width);
+  height: var(--reels-wrapper-height);
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+div#reels {
+  width: var(--reels-width);
+  height: var(--reels-height);
+
+  display: inherit;
+  flex-flow: inherit;
+  justify-content: space-around;
+  align-items: stretch;
+
+  border: groove black;
+}
+div.reel {
+  width: 100%;
+  height: 100%;
+
+  display: inherit;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: inherit;
+
+  border: solid black;
+  border-style: hidden outset;
+}
+div.symbol {
+  width: calc(100% - 2 * var(--each-reel-margin));
+  height: calc(100% - 2 * var(--each-reel-margin));
+
+  margin-right: var(--each-reel-margin);
+  margin-left: var(--each-reel-margin);
+
+  flex-basis: auto;
+  overflow: hidden;
+  position: relative;
+  align-self: stretch;
+}
+div.symbol img {
+  object-fit: cover;
+  position: absolute;
+
+  transform: scale(var(--zoom), var(--zoom));
+}
+
+/* カーソル */
+div.cursor-wrapper {
+  width: var(--reels-wrapper-width);
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+div.cursors {
+  width: var(--reels-width);
+
+  display: inherit;
+  flex-flow: inherit;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+div.cursor {
+  width: 30px;
+  height: 30px;
+  border: 5px solid;
+  border-color: #565656 #565656 transparent transparent;
+}
+div.cursor-up {
+  transform: rotate(315deg);
+}
+div.cursor-down {
+  transform: rotate(135deg);
+}
+
+/* リールの左右の位置決め */
+div.left-symbol img {
+  left: var(--reel-basis-x);
+}
+div.center-symbol img {
+  left: calc(var(--reel-basis-x) - var(--symbol-width));
+}
+div.right-symbol img {
+  left: calc(var(--reel-basis-x) - 2 * var(--symbol-width));
+}
+
+/* リールの上下の位置決め */
+div#upper-left-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--left-upper-reel-position)
+  );
+}
+div#middle-left-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--left-middle-reel-position)
+  );
+}
+div#lower-left-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--left-lower-reel-position)
+  );
+}
+div#upper-center-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--center-upper-reel-position)
+  );
+}
+div#middle-center-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--center-middle-reel-position)
+  );
+}
+div#lower-center-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--center-lower-reel-position)
+  );
+}
+div#upper-right-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--right-upper-reel-position)
+  );
+}
+div#middle-right-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--right-middle-reel-position)
+  );
+}
+div#lower-right-symbol img {
+  top: calc(
+    var(--reel-basis-y) - var(--symbol-height) * var(--right-lower-reel-position)
+  );
+}
