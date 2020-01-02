@@ -15,8 +15,9 @@ class ViewModel {
       left: leftCursor,
       center: centerCursor,
       right: rightCursor,
-      selected: "left"
     }
+
+    this.select = new Select(leftCursor, centerCursor, rightCursor);
 
     // コンフィグ
     this.config = new Config();
@@ -26,7 +27,7 @@ class ViewModel {
   }
 
   selectedReel() {
-    return this.reels[this.cursors.selected];
+    return this.reels[this.select.current()];
   }
 
   updateHash() {
@@ -115,48 +116,6 @@ class Reel {
   }
 }
 
-// カーソルのクラス
-class Cursors {
-  constructor() {
-    // 左・中・右のカーソル
-    this.cursors = [
-      new Cursor("--upper-left-cursor-display", "--lower-left-cursor-display"),
-      new Cursor("--upper-center-cursor-display", "--lower-center-cursor-display"),
-      new Cursor("--upper-right-cursor-display", "--lower-right-curso-displayr")
-    ];
-
-    // 初期値は左
-    this.current = 0;
-
-    // 左は表示、中・右は非表示
-    this.cursors[0].show();
-    this.cursors[1].hide();
-    this.cursors[2].hide();
-  }
-  
-  current() {
-    return _current;
-  }
-  
-  toString() {
-    return ["left", "center", "right"][this._current];
-  }
-  
-  toLeft() {
-    /* TODO:今のカーソルをhiddenに */
-    this._current = (this._current + 2) % 3;
-    this.current = this.toString();
-    /* TODO:新しいカーソルを表示 */
-  }
-  
-  toRight() {
-    /* TODO:今のカーソルをhiddenに */
-    this._current = (this._current + 1) % 3;
-    this.current = this.toString();
-    /* TODO:新しいカーソルを表示 */
-  }
-}
-
 class Cursor {
   constructor(upperCssVariable, lowerCssVariable) {
     this.upperCssVariable = upperCssVariable;
@@ -175,6 +134,41 @@ class Cursor {
   show() {
     root.style.setProperty(this.upperCssVariable, 'visible');
     root.style.setProperty(this.lowerCssVariable, 'visible');
+  }
+}
+
+// 選択のクラス
+class Select {
+  constructor(leftCursor, centerCursor, rightCursor) {
+    // 初期値は左
+    this.current = 0;
+
+    this.cursors = [leftCursor, centerCursor, rightCursor];
+
+    // 左は表示、中・右は非表示
+    this.cursors[0].show();
+    this.cursors[1].hide();
+    this.cursors[2].hide();
+  }
+  
+  current() {
+    return current;
+  }
+  
+  toString() {
+    return ["left", "center", "right"][this.current];
+  }
+  
+  toLeft() {
+    this.cursors[this.current].hide();
+    this.current = (this._current + 2) % 3;
+    this.cursors[this.current].show();
+  }
+  
+  toRight() {
+    this.cursors[this.current].hide();
+    this.current = (this._current + 1) % 3;
+    this.cursors[this.current].show();
   }
 }
 
@@ -252,8 +246,8 @@ root.onkeydown = (e) => {
     viewModel.selectedReel().toDown();
     viewModel.updateHash();
   } else if (e.code === "ArrowLeft") {
-    viewModel.cursor.toLeft();
+    viewModel.select.toLeft();
   } else if (e.code === "ArrowRight") {
-    viewModel.cursor.toRight();
+    viewModel.select.toRight();
   }
 };
