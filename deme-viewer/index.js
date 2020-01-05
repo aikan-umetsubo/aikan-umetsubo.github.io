@@ -27,7 +27,7 @@ class ViewModel {
   }
 
   selectedReel() {
-    return this.reels[this.select.current()];
+    return this.reels[this.select.current];
   }
 
   updateHash() {
@@ -141,33 +141,49 @@ class Cursor {
 class Select {
   constructor(leftCursor, centerCursor, rightCursor) {
     // 初期値は左
-    this.current = 0;
+    this.current = "left";
 
-    this.cursors = [leftCursor, centerCursor, rightCursor];
+    this.cursors = {
+      left: leftCursor,
+      center: centerCursor,
+      right: rightCursor
+    };
 
     // 左は表示、中・右は非表示
-    this.cursors[0].show();
-    this.cursors[1].hide();
-    this.cursors[2].hide();
-  }
-  
-  current() {
-    return current;
+    this.cursors.left.show();
+    this.cursors.center.hide();
+    this.cursors.right.hide();
   }
   
   toString() {
-    return ["left", "center", "right"][this.current];
+    return this.current;
   }
   
   toLeft() {
     this.cursors[this.current].hide();
-    this.current = (this._current + 2) % 3;
+
+    if (this.current === "left") {
+      this.current = "right";
+    } else if (this.current === "center") {
+      this.current = "left";
+    } else {
+      this.current = "center";
+    }
+
     this.cursors[this.current].show();
   }
   
   toRight() {
     this.cursors[this.current].hide();
-    this.current = (this._current + 1) % 3;
+
+    if (this.current === "left") {
+      this.current = "center";
+    } else if (this.current === "center") {
+      this.current = "right";
+    } else {
+      this.current = "left";
+    }
+    
     this.cursors[this.current].show();
   }
 }
