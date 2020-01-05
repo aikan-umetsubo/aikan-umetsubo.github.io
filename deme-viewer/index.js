@@ -248,12 +248,33 @@ const viewModel = new ViewModel(
   new Cursor("--upper-right-cursor-display", "--lower-right-cursor-display")
 );
 
-// ページの読み込み後にビューモデルを初期化
+// ページの読み込み後の処理
 window.onload = () => {
+  // ビューモデルを初期化
   viewModel.init();
+
+  // カーソルクリック時のイベント設定
+  document.querySelector("#upper-left-cursor").onclick = (e) => {
+    viewModel.reels.left.toUp();
+  };
+  document.querySelector("#upper-center-cursor").onclick = (e) => {
+    viewModel.reels.center.toUp();
+  };
+  document.querySelector("#upper-right-cursor").onclick = (e) => {
+    viewModel.reels.right.toUp();
+  };
+  document.querySelector("#lower-left-cursor").onclick = (e) => {
+    viewModel.reels.left.toDown();
+  };
+  document.querySelector("#lower-center-cursor").onclick = (e) => {
+    viewModel.reels.center.toDown();
+  }
+  document.querySelector("#lower-right-cursor").onclick = (e) => {
+    viewModel.reels.right.toDown();
+  };
 };
 
-// 画面操作時のイベント設定
+// キー操作時のイベント設定
 root.onkeydown = (e) => {
   if (e.code === "ArrowUp") {
     viewModel.selectedReel().toUp();
