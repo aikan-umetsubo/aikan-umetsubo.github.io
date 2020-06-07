@@ -17,6 +17,7 @@ class ViewModel {
       right: rightCursor,
     }
 
+    // どのリールが選択されているか
     this.select = new Select(leftCursor, centerCursor, rightCursor);
 
     // コンフィグ
@@ -63,7 +64,7 @@ class Symbol {
   }
 
   toDown() {
-    this.position = (this.position　- 1 + config.symbolCount) % config.symbolCount;
+    this.position = (this.position - 1 + config.symbolCount) % config.symbolCount;
     root.style.setProperty(this.cssVariable, this.position);
   }
   
@@ -117,27 +118,24 @@ class Reel {
 }
 
 class Cursor {
-  constructor(upperCssVariable, lowerCssVariable) {
-    this.upperCssVariable = upperCssVariable;
-    this.lowerCssVariable = lowerCssVariable;
+  constructor(cssVariable) {
+    this.cssVariable = cssVariable;
   }
   
   toString() {
-    return `${this.upperCssVariable} - ${this.lowerCssVariable}`;
+    return `${this.cssVariable}`;
   }
-  
-  hide() {
-    root.style.setProperty(this.upperCssVariable, 'hidden');
-    root.style.setProperty(this.lowerCssVariable, 'hidden');
+
+  select() {
+    root.style.setProperty(this.cssVariable, "#FF0000 #FF0000 transparent transparent");
   }
-  
-  show() {
-    root.style.setProperty(this.upperCssVariable, 'visible');
-    root.style.setProperty(this.lowerCssVariable, 'visible');
+
+  deselect() {
+    root.style.setProperty(this.cssVariable, "#565656 #565656 transparent transparent");
   }
 }
 
-// 選択のクラス
+// 選択されているリールを表すクラス
 class Select {
   constructor(leftCursor, centerCursor, rightCursor) {
     // 初期値は左
@@ -150,45 +148,54 @@ class Select {
     };
 
     // 左は表示、中・右は非表示
-    this.cursors.left.show();
-    this.cursors.center.hide();
-    this.cursors.right.hide();
+    this.cursors.left.select();
+    this.cursors.center.deselect();
+    this.cursors.right.deselect();
   }
   
   toString() {
     return this.current;
   }
   
+  // 選択位置を左に移動
   toLeft() {
-    this.cursors[this.current].hide();
+    // 現在の選択位置
+    const previous = this.current;
 
-    if (this.current === "left") {
-      this.current = "right";
-    } else if (this.current === "center") {
-      this.current = "left";
-    } else {
-      this.current = "center";
-    }
+    // 内部的な選択位置の変更
+    this.current = {
+      "left": "right",
+      "center": "left",
+      "right": "center"
+    }[previous];
 
-    this.cursors[this.current].show();
+    // 画面表示の変更
+    this.cursors[previous].deselect();
+    this.cursors[this.current].select();
   }
-  
-  toRight() {
-    this.cursors[this.current].hide();
 
-    if (this.current === "left") {
-      this.current = "center";
-    } else if (this.current === "center") {
-      this.current = "right";
-    } else {
-      this.current = "left";
-    }
-    
-    this.cursors[this.current].show();
+  // カーソルを右に移動
+  toRight() {
+    // 現在の選択位置
+    const previous = this.current;
+
+    // 内部的な選択位置の変更
+    this.current = {
+      "left": "center",
+      "center": "right",
+      "right": "left"
+    }[previous];
+
+    // 画面表示の変更
+    this.cursors[previous].deselect();
+    this.cursors[this.current].select();
   }
 }
 
 // URLのハッシュ
+//
+// 形式は「LLCCRR」。
+// LL, CC, RRはそれぞれ01〜21の値を取り、左、中、右リールの位置を示す。
 class Hash {
   constructor(left, center, right) {
     if (this.isValid(left, center, right)) {
@@ -201,6 +208,7 @@ class Hash {
     window.location.hash = `${this.left.hash}${this.center.hash}${this.right.hash}`;
   }
   
+  // ハッシュが有効かどうかのチェック
   isValid(left, center, right) {
     return !left && String(left).match(/0[1-9]|1[1-9]|2[0-1]/)
            &&
@@ -243,9 +251,9 @@ const viewModel = new ViewModel(
     new Symbol(config.initialPosition.right+1, "--right-middle-reel-position"),
     new Symbol(config.initialPosition.right+2, "--right-lower-reel-position")
   ),
-  new Cursor("--upper-left-cursor-display", "--lower-left-cursor-display"),
-  new Cursor("--upper-center-cursor-display", "--lower-center-cursor-display"),
-  new Cursor("--upper-right-cursor-display", "--lower-right-cursor-display")
+  new Cursor("--left-cursor-color"),
+  new Cursor("--center-cursor-color"),
+  new Cursor("--right-cursor-color")
 );
 
 // ページの読み込み後の処理

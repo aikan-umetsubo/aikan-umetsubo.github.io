@@ -30,13 +30,9 @@
   --symbol-height: calc(var(--zoom) * var(--source-symbol-height));
 
   /* カーソル */
-  --upper-left-cursor-display: none;
-  --lower-left-cursor-display: none;
-  --upper-center-cursor-display: none;
-  --lower-center-cursor-display: none;
-  --upper-right-cursor-display: none;
-  --lower-right-curso-display: none;
-
+  --left-cursor-color: #565656 #565656 transparent transparent;
+  --center-cursor-color: #565656 #565656 transparent transparent;
+  --right-cursor-color: #565656 #565656 transparent transparent;
 }
 
 /* 画面全体 */
@@ -121,12 +117,10 @@ div.cursors {
   justify-content: space-around;
   align-items: stretch;
 }
-
 div.cursor {
   width: 30px;
   height: 30px;
   border: 5px solid;
-  border-color: #565656 #565656 transparent transparent;
 }
 div.cursor-up {
   transform: rotate(315deg);
@@ -134,8 +128,14 @@ div.cursor-up {
 div.cursor-down {
   transform: rotate(135deg);
 }
-div.cursor-selected{
-  border-color: #FF0000 #FF0000 transparent transparent;
+div.left-cursor {
+  border-color: var(--left-cursor-color);
+}
+div.center-cursor {
+  border-color: var(--center-cursor-color);
+}
+div.right-cursor {
+  border-color: var(--right-cursor-color);
 }
 
 /* リールの左右の位置決め */
