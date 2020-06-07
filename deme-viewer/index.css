@@ -134,6 +134,9 @@ div.cursor-up {
 div.cursor-down {
   transform: rotate(135deg);
 }
+div.cursor-selected{
+  border-color: #FF0000 #FF0000 transparent transparent;
+}
 
 /* リールの左右の位置決め */
 div.left-symbol img {
