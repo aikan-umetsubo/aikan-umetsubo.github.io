@@ -1,4 +1,17 @@
 body {
-  background-color: darkslategrey;
-  color: ghostwhite;
+  background-color: #062020;
+  color: mistyrose;
+}
+
+/* link */
+a:link, a:visited {
+  color: #8ebf42;
+}
+/* mouse over link */
+a:hover {
+  color: #186393;
+}
+/* selected link */
+a:active {
+  color: #800000;
 }
