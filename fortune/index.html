@@ -17,22 +17,49 @@
   <script src="./index.js"></script>
   <title>fortune</title>
   <style>
-    :root {
-      font-size: 1.5em;
-    }
     body {
-        background-color: midnightblue;
-        color: lightskyblue;
+        background-color: black;
+        color: darkgray;
+        font-size: 1em;
+        font-family: Consolas, "Liberation Mono", Courier, monospace
     }
     #fortune {
-        padding-top : 8vh;
-        padding-left : 14.6vw;
-        padding-right : 14.6vw;
-        max-width : 70.8vw;
+        padding-top : 0.5em;
+        padding-left : 0.5em;
+        width: 60ch;
+    }
+    p {
+      margin: 0;
+    }
+    .blink {
+      animation: blinker 1s steps(5, start) infinite;
+
+    }
+    @keyframes blinker {
+      to {
+        visibility: hidden;
+      }
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <article id="fortune"></article>
+  <header></header>
+  <section>
+  <article id="fortune">
+    <p id="line1">
+      $ fortune
+    </p>
+    <p id="line2">
+      <span class="blink">_</span>
+    </p>
+    <p id="line3" class="hidden">
+      $ <span class="blink">_</span>
+    </p>
+  </article>
+  </section>
+  <footer></footer>
 </body>
 </html>
