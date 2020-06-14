@@ -1,0 +1,18 @@
+header, section, footer {
+  margin: 2em;
+}
+
+footer ul{
+  list-style-type: '※';
+}
+
+hr {
+  margin: 2em;
+  border: none;
+  background: white;
+  height: 1px;
+  background-image: -webkit-linear-gradient(left, black, black, white);
+  background-image: -moz-linear-gradient(left, black, black, white);
+  background-image: -ms-linear-gradient(left, black, black, white);
+  background-image: -o-linear-gradient(left, black, black, white);
+}

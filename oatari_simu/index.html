@@ -15,15 +15,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta name="description" content="一般的なデジパチ（確変機、ST機、一種二種混合機）の大当り回数をシミュレートします。">
   <meta name="keywords" content="パチンコ,遊技,シミュレーション,大当り">
-  <title>パチンコ大当りシミュレーター</title>
+  <title>パチンコ大当りシミュレータ</title>
   <script src="./mersenne-twister.js"></script>
   <script src="./index.js"></script>
+  <link href="index.css" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>パチンコ大当りシミュレーター</h1>
+    <h1>パチンコ大当りシミュレータ</h1>
     <p>一般的なデジパチ（確変機、ST機、一種二種混合機）の大当り回数をシミュレートします。</p>
   </header>
+  <hr>
   <section id="inputs">
     <h2>条件</h2>
     <h3>機種情報</h3>
@@ -44,10 +46,22 @@
     </dl>
     <button id="start">GO!</button>
   </section>
+  <hr>
   <section id="output">
     <h1>遊技結果</h1>
-    <div id="result"></div>
+    <div id="result">シミュレート結果がここに表示されます</div>
   </section>
-  <footer></footer>
+  <hr>
+  <footer>
+    <h1>注意</h1>
+    <ul>
+      <li>
+        実質継続率しか見てないので、確変機の確変が1連で終わることがある（そのうち直します）
+      </li>
+      <li>
+        言うまでもないが、ここでシミュレートした通りに行かずに負けたからと言って責任は取りません
+      </li>
+    </ul>
+  </footer>
 </body>
 </html>
