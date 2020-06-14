@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>パチンコ大当りシミュレーター</title>
+  <script src="./mersenne-twister.js"></script>
+  <script src="./index.js"></script>
+</head>
+<body>
+  <header>
+    <h1>パチンコ大当りシミュレーター</h1>
+    <p>一般的なデジパチ（確変機、ST機、一種二種混合機）の大当り回数をシミュレートします。</p>
+  </header>
+  <section id="inputs">
+    <h2>条件</h2>
+    <dl>
+      <dt>大当り確率</dt>
+      <dd>1/<input type="number" name="bonus1" id="bonus1"></dd>
+
+      <dt>確変突入率</dt>
+      <dd><input type="number" name="enter" id="enter">%</dd>
+
+      <dt>確変継続率</dt>
+      <dd><input type="number" name="continue" id="continue">%</dd>
+    </dl>
+    <button id="start">GO!</button>
+  </section>
+  <section id="output">
+    <h1>結果</h1>
+    <div id="result"></div>
+  </section>
+  <footer></footer>
+</body>
+</html>
