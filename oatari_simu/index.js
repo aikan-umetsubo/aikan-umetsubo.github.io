@@ -98,13 +98,16 @@ window.onload = () => {
   document.querySelector('button#start').onclick = () => {
     document.querySelector('div#result').innerHTML  = '';
 
-    const simulator = new Simulator(
-      document.querySelector('input#bonus1').value,
-      document.querySelector('input#enter').value,
-      document.querySelector('input#continue').value
-    );
+    let bonus1 = Number(document.querySelector('input#bonus1').value);
+    let enter = Number(document.querySelector('input#enter').value);
+    let cont = Number(document.querySelector('input#continue').value);
+    let games = Number(document.querySelector('input#normal-games').value);
 
-    simulator.play(2000).forEach((result) => {
+    if (!bonus1 || !enter || !cont || !games) {
+      return;
+    }
+
+    new Simulator(bonus1, enter, cont).play(games).forEach((result) => {
       document.querySelector('div#result').innerHTML += output(result);
     });
   };
