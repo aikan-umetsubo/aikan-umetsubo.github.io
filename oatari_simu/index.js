@@ -94,21 +94,21 @@ const output = (result) => {
   }
 }
 
-window.onload = () => {
-  document.querySelector('button#start').onclick = () => {
-    document.querySelector('div#result').innerHTML  = '';
+$(document).ready(() => {
+  $('button#start').click(() => {
+    $('ol#result-list').html('');
 
-    let bonus1 = Number(document.querySelector('input#bonus1').value);
-    let enter = Number(document.querySelector('input#enter').value);
-    let cont = Number(document.querySelector('input#continue').value);
-    let games = Number(document.querySelector('input#normal-games').value);
+    let bonus1 = Number($('input#bonus1').val());
+    let enter = Number($('input#enter').val());
+    let cont = Number($('input#continue').val());
+    let games = Number($('input#normal-games').val());
 
     if (!bonus1 || !enter || !cont || !games) {
       return;
     }
 
     new Simulator(bonus1, enter, cont).play(games).forEach((result) => {
-      document.querySelector('div#result').innerHTML += output(result);
+      $('ol#result-list').html($('ol#result-list').html() + output(result));
     });
-  };
-};
+  });
+});

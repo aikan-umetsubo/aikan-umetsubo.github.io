@@ -16,6 +16,7 @@
   <meta name="description" content="一般的なデジパチ（確変機、ST機、一種二種混合機）の大当り回数をシミュレートします。">
   <meta name="keywords" content="パチンコ,遊技,シミュレーション,大当り">
   <title>パチンコ大当りシミュレータ</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
   <script src="./mersenne-twister.js"></script>
   <script src="./index.js"></script>
   <link href="index.css" rel="stylesheet">
@@ -49,7 +50,9 @@
   <hr>
   <section id="output">
     <h1>遊技結果</h1>
-    <div id="result">シミュレート結果がここに表示されます</div>
+    <ol id="result-list">
+      シミュレート結果がここに表示されます
+    </ol>
   </section>
   <hr>
   <footer>
