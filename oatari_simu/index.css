@@ -41,6 +41,6 @@ span#win-or-lose.lose, span#balance.lose {
   color:red;
 }
 
-footer ul{
+footer ul#caution-list{
   list-style-type: '※';
 }
