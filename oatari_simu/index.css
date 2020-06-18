@@ -2,10 +2,6 @@ header, section, footer {
   margin: 2em;
 }
 
-footer ul{
-  list-style-type: '※';
-}
-
 hr {
   margin: 2em;
   border: none;
@@ -15,4 +11,36 @@ hr {
   background-image: -moz-linear-gradient(left, black, black, white);
   background-image: -ms-linear-gradient(left, black, black, white);
   background-image: -o-linear-gradient(left, black, black, white);
+}
+
+ol#result-history {
+  list-style-type: none;
+}
+
+span#win-or-lose.win:after {
+  content: '勝ち';
+}
+
+span#win-or-lose.win, span#balance.win {
+  color:green;
+}
+
+span#win-or-lose.draw:after {
+  content: '引き分け';
+}
+
+span#win-or-lose.draw, span#balance.draw {
+  color:black;
+}
+
+span#win-or-lose.lose:after {
+  content: '負け';
+}
+
+span#win-or-lose.lose, span#balance.lose {
+  color:red;
+}
+
+footer ul{
+  list-style-type: '※';
 }

@@ -13,7 +13,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta name="description" content="一般的なデジパチ（確変機、ST機、一種二種混合機）の大当り回数をシミュレートします。">
+  <meta name="description" content="一般的なデジパチ（確変機、ST機、一種二種混合機）を一定ゲーム数プレイした際の大当り回数や収支をシミュレートします。">
   <meta name="keywords" content="パチンコ,遊技,シミュレーション,大当り">
   <title>パチンコ大当りシミュレータ</title>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
@@ -24,42 +24,68 @@
 <body>
   <header>
     <h1>パチンコ大当りシミュレータ</h1>
-    <p>一般的なデジパチ（確変機、ST機、一種二種混合機）の大当り回数をシミュレートします。</p>
+    <p>一般的なデジパチ（確変機、ST機、一種二種混合機）を一定ゲーム数プレイした際の大当り回数や収支をシミュレートします。</p>
   </header>
   <hr>
-  <section id="inputs">
+  <section id="input-section">
     <h2>条件</h2>
     <h3>機種情報</h3>
     <dl>
       <dt>大当り確率</dt>
       <dd>1/<input type="number" name="bonus1" id="bonus1" max="400" min="1" step="0.1" value="319.7"></dd>
 
+      <dt>通常大当りの平均払出</dt>
+      <dd><input type="number" name="normal-payout" id="normal-payout" max="2400" min="0" step="1" value="900">個</dd>
+
       <dt>確変突入率</dt>
       <dd><input type="number" name="enter" id="enter" max="100" min="0" step="0.1" value="50">%</dd>
 
       <dt>確変継続率</dt>
       <dd><input type="number" name="continue" id="continue" max="100" min="0" step="0.1" value="80">%</dd>
+
+      <dt>確変中大当りの平均払出</dt>
+      <dd><input type="number" name="kakuhen-payout" id="kakuhen-payout" max="2400" min="0" step="1" value="1560">個</dd>
     </dl>
     <h3>遊技情報</h3>
     <dl>
+      <dt>軍資金</dt>
+      <dd><input type="number" name="initial-fundage" id="initial-fundage" min="1000" step="500" value="30000"></dd>
+
+      <dt>1000円あたりの回転数</dt>
+      <dd><input type="number" name="games-per-1000" id="games-per-1000" max="250" min="0" step="1" value="20"></dd>
+
       <dt>通常を何ゲーム回すか</dt>
-      <dd><input type="number" name="normal-games" id="normal-games" max="10000" min="0" step="1" value="3000"></dd>
+      <dd><input type="number" name="normal-games" id="normal-games" max="100000" min="0" step="1" value="3000"></dd>
     </dl>
     <button id="start">GO!</button>
   </section>
   <hr>
-  <section id="output">
-    <h1>遊技結果</h1>
-    <ol id="result-list">
-      シミュレート結果がここに表示されます
+  <section id="result-section">
+    <h2>遊技結果</h2>
+
+    <h3>最終結果</h3>
+    <ul id="result-list">
+      <li>勝敗：<span id="win-or-lose">勝ち/敗け</span></li>
+      <li>収支：<span id="balance">±xxxx円</span></li>
+      <li>初当り確率：<span id="hatsuatari-prob">1/xxx</span>（時短中の引き戻し含まず）</li>
+    </ul>
+
+    <h3>遊技履歴</h3>
+    <ol id="result-history">
+      <li>xxxG 確変 x連 所持金 xxxxx円</li>
+      <li>xxxG 通常 所持金 xxxxx円</li>
+      <li>xxxG 確変 x連 所持金 xxxxx円</li>
     </ol>
   </section>
   <hr>
   <footer>
-    <h1>注意</h1>
+    <h2>注意</h2>
     <ul>
       <li>
         実質継続率しか見てないので、確変機の確変が1連で終わることがある（そのうち直します）
+      </li>
+      <li>
+        小数点以下の数値の取扱いなど適当な部分が結構ある
       </li>
       <li>
         言うまでもないが、ここでシミュレートした通りに行かずに負けたからと言って責任は取りません
