@@ -57,12 +57,10 @@ class Simulator {
    */
   play(maxNormalGames) {
     const results = [];
-    let totalGames = 0;
     let games = 0;
 
-    while (totalGames < maxNormalGames) {
+    for (let totalGames = 0; totalGames < maxNormalGames; totalGames++) {
       games++;
-      totalGames++;
       this.playANormalGame();
 
       if (this.isBonus && !this.isKakuhen) {
