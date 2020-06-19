@@ -57,7 +57,7 @@ class Simulator {
     let totalGames = 0;
     let games = 0;
 
-    while (totalGames <= maxNormalGames) {
+    while (totalGames < maxNormalGames) {
       games++;
       totalGames++;
       this.playANormalGame();
