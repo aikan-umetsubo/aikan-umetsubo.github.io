@@ -132,8 +132,9 @@ class View {
   /*
    * 勝敗、収支、総ゲーム数、初当り回数を元に遊技の最終結果を更新する
    */
-  updateResultList(winOrDrawOrLose, balance, totalGames, hatsuatariCount) {
+  updateResultList(balance, totalGames, hatsuatariCount) {
     // 勝敗
+    const winOrDrawOrLose = balance > 0 ? 'win' : balance < 0 ? 'lose' : 'draw';
     $('ul#result-list li span').addClass(winOrDrawOrLose);
 
     // 収支
@@ -182,9 +183,12 @@ $(document).ready(() => {
     // シミュレーション実行
     const results = new Simulator(bonus1, enter, cont).play(games);
 
-    // シミュレーション結果から欲しいデータを抽出
+    // シミュレーション結果を元に初当り回数を求める
+    // (「やめ」を除くのでマイナス1)
+    const hatsuatariCount = results.length - 1;
+
+    // シミュレーション結果を元に最終的な所持金を求めつつ、大当り履歴を更新
     let fundage = initialFundage;
-    let hatsuatariCount = results.length - 1;
     results.forEach((result) => {
       // 大当りまでに使ったお金
       const bet = 1000 * (result.games / gamesPerHideyo);
@@ -196,17 +200,15 @@ $(document).ready(() => {
         finish: (r) => 0
       }[result.type](result);
 
-      // 所持金と初当り回数を更新
+      // 所持金を更新
       fundage = fundage - bet + payout;
-      hatsuatariCount++;
 
       // 大当り履歴を画面に出力
       view.appendPlayHistoryItem(result, fundage);
     });
 
-    // 収支と勝敗を求め、遊技の最終結果を画面に出力
+    // 収支を求め、遊技の最終結果を画面に出力
     const balance = fundage - initialFundage;
-    const winOrDrawOrLose = balance > 0 ? 'win' : balance < 0 ? 'lose' : 'draw';
-    view.updateResultList(winOrDrawOrLose, balance, games, hatsuatariCount);
+    view.updateResultList(balance, games, hatsuatariCount);
   });
 });
