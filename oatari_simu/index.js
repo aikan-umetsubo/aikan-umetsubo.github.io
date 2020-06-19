@@ -12,7 +12,9 @@ class Simulator {
     this.isKakuhen = false;
   }
 
-  // 通常を1ゲーム回す
+  /*
+   * 通常を1ゲーム回す
+   */
   playANormalGame() {
     if (this.rng.genrand_real1() <= this.bonusProb) {
       this.isBonus = true;
@@ -20,12 +22,16 @@ class Simulator {
     }
   }
 
-  // 確変に突入するか判定
+  /*
+   * 確変に突入するか判定する
+   */
   enterKakuhen() {
     return this.rng.genrand_real1() <= this.enterProb;
   }
 
-  // 確変から転落するまで回す
+  /*
+   * 確変から転落するまで回し、継続回数を返す
+   */
   playUntilTenraku() {
     let bonusCount = 1;
 
@@ -43,7 +49,9 @@ class Simulator {
     return bonusCount;
   }
 
-  // 決まった通常ゲーム数回す
+  /*
+   * 決まった通常ゲーム数回し、遊技履歴を返す
+   */
   play(maxNormalGames) {
     const results = [];
     let totalGames = 0;
@@ -86,6 +94,9 @@ class Simulator {
   }
 }
 
+/*
+ * 遊技結果と所持金を元に遊技結果の一覧の一行に相当するDOMを返す
+ */
 const resultListItem = (result, fundage) => {
   // 所持金の小数点以下を四捨五入
   let fundageInt = Number.parseFloat(fundage).toFixed();
