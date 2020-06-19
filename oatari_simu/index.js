@@ -1,3 +1,6 @@
+/*
+ * パチンコシミュレータのクラス
+ */
 class Simulator {
   constructor(bonusProb, enterProb, continueProb) {
     // 乱数生成器
@@ -95,28 +98,69 @@ class Simulator {
 }
 
 /*
- * 遊技結果と所持金を元に遊技結果の一覧の一行に相当するDOMを返す
+ * ビューのクラス
+ * 画面表示の更新はこのクラス経由で実施する
  */
-const resultListItem = (result, fundage) => {
-  // 所持金の小数点以下を四捨五入
-  let fundageInt = Number.parseFloat(fundage).toFixed();
+class View {
+  constructor() { }
 
-  if (result.type === 'normal') {
-    return `<li>${result.games}G 通常 所持金 ${fundageInt}円</li>`;
+  /*
+   * 遊技結果をクリア
+   */
+  clearResult() {
+    $('ul#result-list li span').html('').removeClass('win draw lose');
+    $('ol#play-history').html('');
+  }
 
-  } else if (result.type === 'kakuhen') {
-    return `<li>${result.games}G 確変 ${result.count}連 所持金 ${fundageInt}円</li>`;
+  /*
+   * 遊技結果と所持金を元に遊技結果の一覧に履歴を1行追加する
+   */
+  appendPlayHistoryItem(result, fundage) {
+    // 所持金の小数点以下を四捨五入
+    let fundageInt = Number.parseFloat(fundage).toFixed();
 
-  } else {
-    return `<li>${result.games}G やめ 所持金 ${fundageInt}円</li>`;
+    // 遊技履歴の一覧に履歴を1行追加
+    $('ol#play-history').append(
+      {
+        normal:  `<li>${result.games}G 通常 所持金 ${fundageInt}円</li>`,
+        kakuhen: `<li>${result.games}G 確変 ${result.count}連 所持金 ${fundageInt}円</li>`,
+        finish:  `<li>${result.games}G やめ 所持金 ${fundageInt}円</li>`
+      }[result.type]
+    );
+  }
+
+  /*
+   * 勝敗、収支、総ゲーム数、初当り回数を元に遊技の最終結果を更新する
+   */
+  updateResultList(winOrDrawOrLose, balance, totalGames, hatsuatariCount) {
+    // 勝敗
+    $('ul#result-list li span').addClass(winOrDrawOrLose);
+
+    // 収支
+    $('span#balance').text(
+      {
+        win:  `+${Number.parseFloat(balance).toFixed()}円`,
+        draw: '±0円',
+        lose: `${Number.parseFloat(balance).toFixed()}円`
+      }[winOrDrawOrLose]
+    );
+
+    // 初当り確率
+    if (hatsuatariCount > 0) {
+      let hatsuatariProb = Number.parseFloat(totalGames / hatsuatariCount).toFixed(2);
+      $('span#hatsuatari-prob').text(`1/${hatsuatariProb}`);
+    } else {
+      $('span#hatsuatari-prob').text('-');
+    }
   }
 }
+
+const view = new View();
 
 $(document).ready(() => {
   $('button#start').click(() => {
     // 遊技結果をクリア
-    $('ul#result-list li span').html('').removeClass('win draw lose');
-    $('ol#result-history').html('');
+    view.clearResult();
 
     // 入力された機種情報、遊技情報を取得
     const bonus1 = Number($('input#bonus1').val());
@@ -143,10 +187,10 @@ $(document).ready(() => {
     let hatsuatariCount = results.length - 1;
     results.forEach((result) => {
       // 大当りまでに使ったお金
-      let bet = 1000 * (result.games / gamesPerHideyo);
+      const bet = 1000 * (result.games / gamesPerHideyo);
 
       // 大当りで得たお金
-      let payout = {
+      const payout = {
         normal: (r) => 4 * result.count * normalPayout,
         kakuhen: (r) => 4 * (normalPayout + (result.count - 1) * kakuhenPayout),
         finish: (r) => 0
@@ -157,28 +201,12 @@ $(document).ready(() => {
       hatsuatariCount++;
 
       // 大当り履歴を画面に出力
-      $('ol#result-history').append(resultListItem(result, fundage));
+      view.appendPlayHistoryItem(result, fundage);
     });
 
-    // 遊技の最終結果を画面に出力
-    // 勝敗、収支
-    if (initialFundage < fundage) {
-      $('ul#result-list li span').addClass('win');
-      $('span#balance').text(`+${Number.parseFloat(fundage - initialFundage).toFixed()}円`);
-    } else if (initialFundage === fundage) {
-      $('ul#result-list li span').addClass('draw');
-      $('span#balance').text(`±0円`);
-    } else {
-      $('ul#result-list li span').addClass('lose');
-      $('span#balance').text(`-${Number.parseFloat(initialFundage - fundage).toFixed()}円`);
-    }
-
-    // 初当り確率
-    if (hatsuatariCount > 0) {
-      let hatsuatariProb = Number.parseFloat(games / hatsuatariCount).toFixed(2);
-      $('span#hatsuatari-prob').text(`1/${hatsuatariProb}`);
-    } else {
-      $('span#hatsuatari-prob').text('-');
-    }
+    // 収支と勝敗を求め、遊技の最終結果を画面に出力
+    const balance = fundage - initialFundage;
+    const winOrDrawOrLose = balance > 0 ? 'win' : balance < 0 ? 'lose' : 'draw';
+    view.updateResultList(winOrDrawOrLose, balance, games, hatsuatariCount);
   });
 });
