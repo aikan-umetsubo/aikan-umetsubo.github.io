@@ -13,7 +13,7 @@ hr {
   background-image: -o-linear-gradient(left, black, black, white);
 }
 
-ol#result-history {
+ol#play-history {
   list-style-type: none;
 }
 
