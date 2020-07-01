@@ -31,6 +31,14 @@
     <h2>条件</h2>
     <h3>機種情報</h3>
     <dl>
+      <dt>タイプ</dt>
+      <dd>
+        <select name="type" id="type">
+          <option value="kakuhen" selected="true">確変機</option>
+          <option value="kakuhen">ST機・一種二種混合機</option>
+        </select>
+      </dd>
+
       <dt>大当り確率</dt>
       <dd>1/<input type="number" name="bonus1" id="bonus1" max="400" min="1" step="0.1" value="319.7"></dd>
 
@@ -85,18 +93,12 @@
         収支に関しては4円パチンコの等価交換で計算しています
       </li>
       <li>
-        実質継続率しか見てないので、確変機の確変が1連で終わることがある（そのうち直します）
-      </li>
-      <li>
         言うまでもないが、ここでシミュレートした通りに行かずに負けたからと言って責任は取りません
       </li>
     </ul>
 
     <h2>今後の計画</h2>
     <ul id="plan-list">
-      <li>
-        確変機の場合は単発なしにする
-      </li>
       <li>
         交換率を入力可能にし、所持金と持ち玉数を別に表示する
       </li>

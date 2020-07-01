@@ -2,9 +2,12 @@
  * パチンコシミュレータのクラス
  */
 class Simulator {
-  constructor(bonusProb, enterProb, continueProb) {
+  constructor(type, bonusProb, enterProb, continueProb) {
     // 乱数生成器
     this.rng = new MersenneTwister();
+
+    // タイプ
+    this.type = type;
 
     // ボーナス確率
     this.bonusProb = 1.0 / bonusProb;
@@ -39,6 +42,14 @@ class Simulator {
     let bonusCount = 1;
 
     while (true) {
+
+      // 確変機の場合は2連目は確定
+      if (bonusCount == 1 && this.type === 'kakuhen') {
+        bonusCount++;
+        continue;
+      }
+
+      // 確変機の3連目以降かST機、一種二種混合機の場合は転落抽選
       let endKakuhen = this.rng.genrand_real1() > this.continueProb;
       if (endKakuhen) {
         break;
@@ -162,6 +173,7 @@ $(document).ready(() => {
     view.clearResult();
 
     // 入力された機種情報、遊技情報を取得
+    const type = $('select#type').val();
     const bonus1 = Number($('input#bonus1').val());
     const normalPayout = Number($('input#normal-payout').val());
     const enter = Number($('input#enter').val());
@@ -179,7 +191,7 @@ $(document).ready(() => {
     }
 
     // シミュレーション実行
-    const results = new Simulator(bonus1, enter, cont).play(games);
+    const results = new Simulator(type, bonus1, enter, cont).play(games);
 
     // シミュレーション結果を元に初当り回数を求める
     // (「やめ」を除くのでマイナス1)
