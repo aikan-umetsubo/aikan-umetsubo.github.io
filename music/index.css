@@ -1,0 +1,13 @@
+header, main, footer {
+  margin: 0.5em;
+}
+
+section {
+  margin: 0 0 1em 0;
+  padding: 1em;
+}
+
+article {
+  margin: 0em 0 1em 0;
+  padding: 1em;
+}
