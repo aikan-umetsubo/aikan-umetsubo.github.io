@@ -9,14 +9,14 @@
   <script src="./billboard.pkgd.js"></script>
   <script src="./mt.js"></script>
   <script src="./index.js"></script>
-  <title>金のやりとり問題1</title>
+  <title>金のやりとり問題2</title>
 </head>
 <body>
   <header>
-    <h2>金のやりとり問題1</h2>
+    <h2>金のやりとり問題2</h2>
     <p>初めに100万円を100人それぞれに配り、その後ランダムな1人が誰か別の1人に1万円を渡す。これを繰り返すとどうなるか。</p>
     <p>全員100万円に収束しそうな気もするが・・・？</p>
-    <p>このページは所持金0の人は単にスキップされるシミュレーション。<a href="../exchange_money2/">金のやりとり問題2</a>は所持金が0になった人は死んでしまい、その後は金を受け取ることができなくなる想定のシミュレーション。</p>
+    <p>このページは所持金が0になった人は死んでしまい、その後は金を受け取ることができなくなる想定のシミュレーション。<a href="../exchange_money/">金のやりとり問題1</a>（所持金0の人は単にスキップされるだけの場合）よりスピードを上げてます</p>
   </header>
   <section>
     <h3>シミュレーション</h3>
@@ -26,6 +26,7 @@
         <li><button id="stop">停止</button></li>
       </ul>
     </div>
+    <div id="title">生存者数：<span id="aliveCount"></span>人</div>
     <div id="chart"></div>
   </section>
   <footer>
