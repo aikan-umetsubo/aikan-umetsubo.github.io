@@ -1,28 +1,35 @@
 const people = new Array(100);
 let chart;
+let aliveCount;
 const mt = new MersenneTwister();
 let intervalId;
 let playing = false;
 
 window.onload = () => {
-  initChart();
+  initView();
   initCtrl();
 };
 
 initPeople = () => {
   for (let i = 0; i < people.length; i++) {
-    people[i] = 100;
+    people[i] = {
+      alive: true,
+      money: 100
+    };
   }
 };
 
-initChart = () => {
+initView = () => {
   initPeople();
+
+  aliveCount = document.querySelector('span#aliveCount');
+  aliveCount.innerHTML = people.filter((p) => p.alive).length;
+
   chart = bb.generate({
     bindto: "#chart",
     data: {
       columns: [
-          // 結果は ["people", 100, 100, ..., 100] になる
-          ["people"].concat(people)
+          ["people"].concat(people.map(p => p.money))
       ],
       types: {
         people: "bar"
@@ -53,7 +60,7 @@ initChart = () => {
         lines: [
           {
             value: 100,
-            color: "blue"
+            color: "black"
           }
         ]
       }
@@ -69,9 +76,9 @@ initCtrl = () => {
 play = () => {
   if (playing) return;
 
-  let hundredStep = () => { step(100) };
+  let steps = () => { step(5000) };
   let interval = 1;
-  intervalId = setInterval(hundredStep, interval);
+  intervalId = setInterval(steps, interval);
 
   playing = true;
 }
@@ -86,27 +93,32 @@ step = (count) => {
     updatePeople();
   }
 
-  updateChart();
+  updateView();
 }
 
 updatePeople = () => {
-  // 1万円を渡す人をランダムに選択（所持金が10000円に満たない場合は選び直す）
+  // 1万円を渡す人をランダムに選択（所持金が10000円に満たないか、死んでる人の場合は選び直す）
   let from = mt.nextInt(0, 100);
-  while (people[from] < 1) from = mt.nextInt(0, 100);
+  while (people[from].money < 1 || !people[from].alive) from = mt.nextInt(0, 100);
 
-  // 1万円を受け取る人をランダムに選択（渡す人と同じになった場合は選び直す）
+  // 1万円を受け取る人をランダムに選択（渡す人と同じになったか、死んでる人の場合は選び直す）
   let to = mt.nextInt(0, 100);
-  while (from === to) to = mt.nextInt(0, 100);
+  while (from === to || !people[to].alive) to = mt.nextInt(0, 100);
 
   // 受け渡し
-  people[from] = people[from] - 1;
-  people[to] = people[to] + 1;
+  people[from].money = people[from].money - 1;
+  people[to].money = people[to].money + 1;
+
+  // 受け渡しの結果、所持金が10000円以下になった場合は死んじゃう
+  if (people[from].money < 1) people[from].alive = false;
 };
 
-updateChart = () => {
+updateView = () => {
+  aliveCount.innerHTML = people.filter((p) => p.alive).length;
+
   chart.load({
     columns: [
-      ["people"].concat(people)
+      ["people"].concat(people.map(p => p.money))
     ]
   });
 };
