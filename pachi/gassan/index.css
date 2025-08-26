@@ -44,3 +44,18 @@ span#win-or-lose.lose, span#balance.lose {
 footer ul#caution-list{
   list-style-type: '※';
 }
+
+/* Make textarea centered with side whitespace and non-resizable */
+textarea#input-area {
+  width: 80vw;
+  max-width: 80vw;
+  box-sizing: border-box;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  resize: none;
+}
+
+table, th, td {
+  border: 1px solid gray;
+}

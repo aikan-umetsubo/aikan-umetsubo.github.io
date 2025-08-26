@@ -23,14 +23,17 @@
 </head>
 <body>
   <header>
-    <h3>複数台のパチスロの合算確率を計算</h3>
+    <h2>合算確率計算ツール</h2>
   </header>
   <hr>
   <section id="input-section">
-    <textarea name="input-area" id="input-area"></textarea>
+    <h3>入力欄</h3>
+    <p>※各行に「ゲーム数　BIG回数　REG回数」と入力する。</p>
+    <textarea name="input-area" id="input-area" rows="10" placeholder="5000 25 25"></textarea>
   </section>
   <hr>
   <section id="output-section">
+    <h3>結果</h3>
     <dl>
       <dt>総ゲーム数</dt>
       <dd id="total-game-count">？？？</dd>
@@ -42,5 +45,37 @@
       <dd id="reg-bonus-count">？？？</dd>
     </dl>
   </section>
+  <hr>
+  <footer>
+    <h3>参考</h3>
+    <table>
+      <caption>アイム</caption>
+      <thead>
+        <tr><th>設定</th><th>BIG確率</th><th>REG確率</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>1/273.1</td><td>1/439.8</td></tr>
+        <tr><td>2</td><td>1/269.7</td><td>1/399.6</td></tr>
+        <tr><td>3</td><td>1/269.7</td><td>1/331.0</td></tr>
+        <tr><td>4</td><td>1/259.0</td><td>1/315.1</td></tr>
+        <tr><td>5</td><td>1/259.0</td><td>1/255.0</td></tr>
+        <tr><td>6</td><td>1/255.0</td><td>1/255.0</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>マイ</caption>
+      <thead>
+        <tr><th>設定</th><th>BIG確率</th><th>REG確率</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>1/273.1</td><td>1/409.6</td></tr>
+        <tr><td>2</td><td>1/270.8</td><td>1/385.5</td></tr>
+        <tr><td>3</td><td>1/266.4</td><td>1/336.1</td></tr>
+        <tr><td>4</td><td>1/254.0</td><td>1/290.0</td></tr>
+        <tr><td>5</td><td>1/240.1</td><td>1/268.6</td></tr>
+        <tr><td>6</td><td>1/229.1</td><td>1/229.1</td></tr>
+      </tbody>
+    </table>
+  </footer>
 </body>
 </html>
