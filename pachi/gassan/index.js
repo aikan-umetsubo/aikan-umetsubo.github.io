@@ -55,7 +55,7 @@ $(document).ready(() => {
     const bigDenominator = totalGameCount.div(totalBigCount);
     const regDenominator = totalGameCount.div(totalRegCount);
     
-    this.updateResult(totalGameCount, bigDenominator, regDenominator);
+    view.updateResult(totalGameCount, bigDenominator, regDenominator);
 
     $('article#output-article').html(result);
   });
