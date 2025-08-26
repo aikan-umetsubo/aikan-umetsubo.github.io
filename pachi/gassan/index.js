@@ -56,7 +56,5 @@ $(document).ready(() => {
     const regDenominator = totalGameCount.div(totalRegCount);
     
     view.updateResult(totalGameCount, bigDenominator, regDenominator);
-
-    $('article#output-article').html(result);
   });
 });
