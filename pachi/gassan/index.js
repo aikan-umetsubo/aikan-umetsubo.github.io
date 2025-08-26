@@ -1,8 +1,8 @@
 /*
- * ビューモデルのクラス
+ * ビューのクラス
  * このクラスを更新することで画面表示も更新される
  */
-class ViewModel {
+class View {
   constructor() { }
 
   /*
