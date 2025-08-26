@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics START-->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139549783-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-139549783-2');
+  </script>
+  <!-- Global site tag (gtag.js) - Google Analytics END -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="description" content="パチスロの複数台の合算確率を計算">
+  <meta name="keywords" content="パチスロ,遊技,シミュレーション,大当り">
+  <title>合算確率</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+  <script src='https://cdn.jsdelivr.net/npm/bignumber.js@9.3.1/bignumber.min.js'></script>
+  <script src="./index.js"></script>
+  <link href="index.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>合算確率</h1>
+    <p>複数台のパチスロの合算確率を計算</p>
+  </header>
+  <hr>
+  <section id="input-section">
+    <textarea name="input-area" id="input-area"></textarea>
+  </section>
+  <hr>
+  <section id="output-section">
+    <article id="output-article"></article>
+  </section>
+  <hr>
+  <footer>
+  </footer>
+</body>
+</html>
