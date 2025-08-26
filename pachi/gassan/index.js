@@ -6,21 +6,18 @@ class View {
   constructor() { }
 
   /*
-   * 表示をクリア
-   */
-  clearResult() {
-    $('article#output-article').html('').innerText = '';
-  }
-
-  /*
    * 値を表示
    */
   updateResult(gameCount, big, reg) {
-    $('article#output-article').html('').innerText = `総ゲーム数 ${gameCount} G BIG 1/${big} REG 1/${reg}`;
+    $('dd#total-game-count').html(`${gameCount} G`);
+    $('dd#big-bonus-count').html(`1/${big}`);
+    $('dd#reg-bonus-count').html(`1/${reg}`);
   }
 }
 
 const view = new View();
+
+BigNumber.set({ DECIMAL_PLACES: 2, ROUNDING_MODE: 4 })
 
 $(document).ready(() => {
   $('textarea#input-area').on("change", () => {
@@ -28,16 +25,16 @@ $(document).ready(() => {
     const data = [];
 
     src.split('\n').forEach(line => {
-      const values = line.split('( |　|\t)');
+      const values = line.split(/ |　|\t/);
       if (values.length != 3) {
         return;
       }
 
       const [gameCount, bigCount, regCount] = values.map((v) => {
-        str = str.replace(/[０-９]/g, function(s) {
+        str = v.replace(/[０-９]/g, function(s) {
           return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
         });
-        return new BigNumber(v);
+        return new BigNumber(str);
       });
       data.push({gameCount: gameCount, bigCount: bigCount, regCount: regCount});
     })
