@@ -1,9 +1,11 @@
+/* セクション間のマージン */
 header, section, footer {
-  margin: 2em;
+  margin: 1em;
 }
 
+/* 水平線のスタイル指定 */
 hr {
-  margin: 2em;
+  margin: 1em;
   border: none;
   background: white;
   height: 1px;
@@ -13,39 +15,7 @@ hr {
   background-image: -o-linear-gradient(left, black, black, white);
 }
 
-ol#play-history {
-  list-style-type: none;
-}
-
-span#win-or-lose.win:after {
-  content: '勝ち';
-}
-
-span#win-or-lose.win, span#balance.win {
-  color:green;
-}
-
-span#win-or-lose.draw:after {
-  content: '引き分け';
-}
-
-span#win-or-lose.draw, span#balance.draw {
-  color:black;
-}
-
-span#win-or-lose.lose:after {
-  content: '負け';
-}
-
-span#win-or-lose.lose, span#balance.lose {
-  color:red;
-}
-
-footer ul#caution-list{
-  list-style-type: '※';
-}
-
-/* Make textarea centered with side whitespace and non-resizable */
+/* 入力欄：幅の指定とサイズ変更禁止 */
 textarea#input-area {
   width: 80vw;
   max-width: 80vw;
@@ -56,6 +26,100 @@ textarea#input-area {
   resize: none;
 }
 
+/* 計算結果のスタイル */
+#result-list {
+  list-style-type: none;
+}
+
+/* スペック表のスタイル */
 table, th, td {
   border: 1px solid gray;
+}
+
+/* スペック表のタブ表示 */
+.tab-title, .tab-body {
+  border: 2px solid rgb(80, 80, 80);
+}
+.tab-title {
+  border-bottom: none;
+  padding: .3em .5em;
+  border-radius: .3em .3em 0 0;
+  text-align: center;
+  display: table; 
+}
+.tab-body {
+  width: 100vw;
+}
+.tab-body > div {
+  width: 100%;
+  height: 200px;
+  border-radius: 0 .3em .3em .3em;
+  padding: 1em;
+}
+
+/* radio non-display */
+.container .radio {
+  display: none;
+}
+/* tabs position */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+.container::after {
+  content: "";
+  width: 100%;
+}
+.container .tab-title {
+  position: relative;
+  border-bottom: 2px solid transparent;
+  top: 2px;
+  left: 2px;
+}
+.container .tab-title:hover {
+  cursor: pointer;
+}
+.container .tab-body {
+  order: 1;
+}
+
+/* tab's body init */
+.add-control .tab-body > div {
+  display: none;
+}
+
+/* selected tab's color change */
+.add-control input + .tab-title {
+  color: #FFF;
+  background-color: #555;
+}
+.add-control input:checked + .tab-title {
+  color: #000;
+  background-color: #FFF;
+  border-bottom-color: #fff;
+}
+
+
+/* tabs control */
+.add-control #tab-im:checked ~ .tab-body > #body-im {
+  display: block;
+}
+.add-control #tab-my:checked ~ .tab-body > #body-my {
+  display: block;
+}
+.add-control #tab-gogo:checked ~ .tab-body > #body-gogo {
+  display: block;
+}
+.add-control #tab-happy:checked ~ .tab-body > #body-happy {
+  display: block;
+}
+.add-control #tab-miracle:checked ~ .tab-body > #body-miracle {
+  display: block;
+}
+.add-control #tab-girls:checked ~ .tab-body > #body-girls {
+  display: block;
+}
+.add-control #tab-mr:checked ~ .tab-body > #body-mr {
+  display: block;
 }

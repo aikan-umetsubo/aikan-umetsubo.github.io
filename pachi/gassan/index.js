@@ -9,9 +9,9 @@ class View {
    * 値を表示
    */
   updateResult(gameCount, big, reg) {
-    $('dd#total-game-count').html(`${gameCount} G`);
-    $('dd#big-bonus-count').html(`1/${big}`);
-    $('dd#reg-bonus-count').html(`1/${reg}`);
+    $('li#total-game-count').html(`総ゲーム数：${gameCount}`);
+    $('li#big-bonus-prob').html(`BIG：1/${big}`);
+    $('li#reg-bonus-prob').html(`REG：1/${reg}`);
   }
 }
 
